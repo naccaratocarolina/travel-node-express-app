@@ -1,0 +1,31 @@
+{
+  "name": "travel-node-express-app",
+  "version": "1.0.0",
+  "description": "App desenvolvido em Express.js e Node.js para fins de aprendizado.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naccaratocarolina/travel-node-express-app.git"
+  },
+  "author": "Carolina Naccarato & Lucas Pereira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naccaratocarolina/travel-node-express-app/issues"
+  },
+  "homepage": "https://github.com/naccaratocarolina/travel-node-express-app#readme",
+  "dependencies": {
+    "@types/express": "^4.17.8",
+    "body-parser": "^1.19.0",
+    "chalk": "^4.1.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "http": "0.0.1-security",
+    "mongoose": "^5.10.9",
+    "mongoose-auto-increment": "^5.0.1",
+    "morgan": "^1.10.0",
+    "typescript": "^4.0.3"
+  }
+}
