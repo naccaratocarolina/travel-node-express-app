@@ -5,7 +5,7 @@ const userSchema = new Schema(
         name: {
             type: String,
             unique: false,
-            required: [true, "Voce esqueceu de inserir o seu nome :)"]
+            required: false
         },
 
         email: {
@@ -14,10 +14,16 @@ const userSchema = new Schema(
             required: [true, "Voce esqueceu de inserir o seu email :)"]
         },
 
-        password: {
+        hash: {
             type: String,
             unique: false,
-            required: [true, "Voce esqueceu de inserir a sua senha :)"]
+            required: true
+        },
+
+        salt: {
+            type: String,
+            unique: false,
+            required: true
         }
     },
     { timestamps: true, collection: "users" }

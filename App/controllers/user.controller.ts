@@ -1,5 +1,7 @@
 // @ts-ignore
-const User = require('../models/user.model.ts');
+const User = require('../models/user.model.ts').model('User');
+// @ts-ignore
+const utils = require('../lib/utils.ts');
 
 /**
  * List all users.
@@ -57,7 +59,6 @@ exports.getUser = function (request, response, next) {
         }
 
         response.json({
-            user: user,
             message: "Usuário encontrado com sucesso!"
         });
     });
@@ -70,10 +71,15 @@ exports.getUser = function (request, response, next) {
  * @param response
  */
 exports.createUser = function (request, response, next) {
+    const generateHash = utils.generateHash(request.body.password);
+    const salt = generateHash.salt;
+    const hash = generateHash.hash;
+
     var newUser = new User ({
         name: request.body.name,
         email: request.body.email,
-        password: request.body.password
+        salt: salt,
+        hash: hash
     });
 
     newUser.save(newUser, function (err, newUser) {
