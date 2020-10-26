@@ -79,7 +79,8 @@ exports.createUser = function (request, response, next) {
         name: request.body.name,
         email: request.body.email,
         salt: salt,
-        hash: hash
+        hash: hash,
+        role: request.body.role
     });
 
     newUser.save(newUser, function (err, newUser) {
