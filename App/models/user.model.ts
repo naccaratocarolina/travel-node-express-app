@@ -30,9 +30,12 @@ const userSchema = new Schema(
             type: String,
             default: "User",
             enum: ["User", "Moderator", "Admin"]
-        }
+        },
+
+        ratings: [{type: Schema.Types.ObjectId, ref: 'Rating'}]
     },
     { timestamps: true, collection: "users" }
 );
 
 module.exports = model('User', userSchema);
+export {};
