@@ -1,8 +1,9 @@
-// @ts-ignore
 const User = require('./controllers/user.controller.ts');
 
 const Auth = require('./controllers/API/auth.controller.ts');
+
 const authMiddleware = require('./middlewares/auth.middleware.ts');
+const grantAccessMiddleware = require('./middlewares/grantAccess.middleware.ts');
 
 const Hotel = require('./controllers/hotel.controller.ts');
 const Rating = require('./controllers/rating.controller.ts');
@@ -20,7 +21,7 @@ module.exports = function (router) {
     router.delete('/user/:id', User.deleteUser);
 
     //Hotel
-    router.get('/hotel', authMiddleware, Hotel.listAllHotels);
+    router.get('/hotel', authMiddleware, grantAccessMiddleware('readAny', 'hotel'), Hotel.listAllHotels);
     router.get('/hotel/:id', authMiddleware, Hotel.getHotel);
     router.post('/hotel', authMiddleware, Hotel.createHotel);
     router.delete('/hotel/:id', authMiddleware, Hotel.deleteHotel);

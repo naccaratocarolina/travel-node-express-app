@@ -29,7 +29,7 @@ const userSchema = new Schema(
         role: {
             type: String,
             default: "User",
-            enum: ["User", "Moderator", "Admin"]
+            enum: ["User", "Admin"]
         },
 
         ratings: [{type: Schema.Types.ObjectId, ref: 'Rating'}]

@@ -47,6 +47,8 @@ function generateJsonWebToken(user) {
         iat: Date.now()
     };
 
+    console.log(payload.sub);
+
     //Gera e retorna o JWT
     return jsonwebtoken.sign(payload, PRIV_KEY, {expiresIn: '7d', algorithm: 'RS256' });
 }
