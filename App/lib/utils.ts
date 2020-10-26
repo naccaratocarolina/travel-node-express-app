@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 const pathToKey = path.join(__dirname, '../../', 'id_rsa_priv.pem');
+
+//Usamos chave privada pois queremos decriptar dados
 const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 /**
@@ -13,7 +15,9 @@ const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
  * @param password
  */
 function generateHash(password) {
+    //O salt eh uma string única, aleatória e arbitrária, que tem pelo menos 16 bytes de comprimento
     const salt = crypto.randomBytes(32).toString('hex');
+    //Password-Based Key Derivation Function 2 (PBKDF2)
     const hash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
 
     return {
@@ -46,8 +50,6 @@ function generateJsonWebToken(user) {
         sub: _id,
         iat: Date.now()
     };
-
-    console.log(payload.sub);
 
     //Gera e retorna o JWT
     return jsonwebtoken.sign(payload, PRIV_KEY, {expiresIn: '7d', algorithm: 'RS256' });

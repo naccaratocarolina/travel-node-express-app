@@ -1,11 +1,17 @@
+//User Controller
 const User = require('./controllers/user.controller.ts');
 
+//Auth Controller
 const Auth = require('./controllers/API/auth.controller.ts');
 
+//Middlewares
 const authMiddleware = require('./middlewares/auth.middleware.ts');
-const grantAccessMiddleware = require('./middlewares/grantAccess.middleware.ts');
+const verifyPermissionMiddleware = require('./middlewares/verifyPermission.middleware.ts');
 
+//Hotel Controller
 const Hotel = require('./controllers/hotel.controller.ts');
+
+//Rating Controller
 const Rating = require('./controllers/rating.controller.ts');
 
 module.exports = function (router) {
@@ -20,8 +26,8 @@ module.exports = function (router) {
     router.put('/user/:id', User.updateUser);
     router.delete('/user/:id', User.deleteUser);
 
-    //Hotel
-    router.get('/hotel', authMiddleware, grantAccessMiddleware('readAny', 'hotel'), Hotel.listAllHotels);
+    //Hotel Controller
+    router.get('/hotel', authMiddleware, verifyPermissionMiddleware('readAny', 'hotel'), Hotel.listAllHotels);
     router.get('/hotel/:id', authMiddleware, Hotel.getHotel);
     router.post('/hotel', authMiddleware, Hotel.createHotel);
     router.delete('/hotel/:id', authMiddleware, Hotel.deleteHotel);
@@ -31,7 +37,7 @@ module.exports = function (router) {
     router.put('/hotel/room/:id', authMiddleware, Hotel.createRoom);
     router.put('/hotel/room/:hotelId/:roomId', authMiddleware, Hotel.deleteRoom);
 
-    //Rating
+    //Rating Controller
     router.post('/rating', authMiddleware, Rating.createRating);
 };
 

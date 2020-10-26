@@ -18,7 +18,10 @@ const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 const options = {
     //Indica que receberemos o token na header de autenticacao
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+
+    //Usaremos a chave publica pois iremos encriptar dados
     secretOrKey: PUB_KEY,
+
     //Especifica o algoritmo de criptografia
     algorithms: ['RS256']
 }

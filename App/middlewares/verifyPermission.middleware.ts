@@ -1,6 +1,6 @@
 const { roles } = require('../lib/roles.ts');
 
-module.exports = function grantAccessMiddleware (action, resource) {
+module.exports = function verifyPermissionMiddleware (action, resource) {
     return async (request, response, next) => {
         try {
             const permission = roles.can(request.body.role)[action](resource);

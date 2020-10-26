@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const pathToKey = path.join(__dirname, '../../', 'id_rsa_pub.pem');
+
+//Usamos a chave publica pois queremos verificar uma entidade decriptando dados encriptografados
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 module.exports = function authMiddleware (request, response, next) {
