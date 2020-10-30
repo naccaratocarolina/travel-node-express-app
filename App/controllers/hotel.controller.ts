@@ -27,7 +27,11 @@ exports.listAllHotels = async function (req, res){
 	try{
 		const data = await Hotel.find().populate({path:'ratings', select:['_id', 'rating'],
 		populate: {path: '_user', model: 'User', select: 'name'}});
-		res.send(data);
+		if(data.length == 0){
+			res.status(404).json({message:"Ainda não existem hoteis cadastrados."});
+		}else{
+			res.send(data);
+		}
 
 	}catch(error){
 		res.status(500).json({message: error.message});
@@ -40,7 +44,7 @@ exports.getHotel = async function(req, res){
 		populate: {path: '_user', model: 'User', select: 'name'}});;
 		
 		if(!data){
-			res.json({message: "Hotel não encontrado"});
+			res.status(404).json({message: "Hotel não encontrado"});
 		}else{
 			res.send(data);
 		}
@@ -54,7 +58,7 @@ exports.deleteHotel = async function(req, res){
 	try{
 		const data = await Hotel.findByIdAndDelete(req.params.id);
 		if(!data){
-			res.json({message: "Hotel não encontrado"})
+			res.status(404).json({message: "Hotel não encontrado"})
 		}else{
 			res.json({message: "Hotel deletado com sucesso!"});
 		}
@@ -63,7 +67,6 @@ exports.deleteHotel = async function(req, res){
 	}
 }
 
-// Adiciona quarto em um hotel
 exports.createRoom = async (req, res) => {
 	const newRoom = {
 		$push: {
@@ -86,7 +89,6 @@ exports.createRoom = async (req, res) => {
 	}	
 }
 
-// Remove quarto de um hotel
 exports.deleteRoom = async (req, res) => {
 	try{
 		const data = await Hotel.findByIdAndUpdate(req.params.hotelId,{
@@ -94,7 +96,7 @@ exports.deleteRoom = async (req, res) => {
 		});
 		
 		if(!data){
-			res.json({message: "Hotel não encontrado"});
+			res.status(404).json({message: "Hotel não encontrado"});
 		}else{
 			res.json({message: "Quarto deletado com sucesso!"});
 		}
