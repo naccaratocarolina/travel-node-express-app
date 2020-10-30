@@ -5,7 +5,7 @@ const hotelSchema = new Schema(
         name: {
             type: String,
             unique: false,
-            required: [true, "Voce esqueceu de inserir o seu nome :)"]
+            required: [true, "O campo 'nome' é obrigatório"]
         },
 
 		// Relação 1-1
