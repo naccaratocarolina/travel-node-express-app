@@ -33,9 +33,8 @@ module.exports = function (router) {
     router.delete('/hotel/:id', authMiddleware, Hotel.deleteHotel);
 
     //Hotel Room
-    //Tenho algumas dúvidas sobre quais verbos usar nessas rotas. Eles editam o Hotel, então seriam put mesmo?
-    router.put('/hotel/room/:id', authMiddleware, Hotel.createRoom);
-    router.put('/hotel/room/:hotelId/:roomId', authMiddleware, Hotel.deleteRoom);
+    router.post('/hotel/:hotelId/room',authMiddleware, Hotel.createRoom);
+    router.delete('/hotel/:hotelId/room/:roomId', authMiddleware, Hotel.deleteRoom);
 
     //Rating Controller
     router.post('/rating', authMiddleware, Rating.createRating);
