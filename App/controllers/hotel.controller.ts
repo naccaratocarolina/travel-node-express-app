@@ -81,7 +81,7 @@ exports.createRoom = async (req, res) => {
 	};
 
 	try{
-		const data = await Hotel.findByIdAndUpdate(req.params.id, newRoom, {new: true});
+		const data = await Hotel.findByIdAndUpdate(req.params.hotelId, newRoom, {new: true});
 		return res.send(data);
 
 	}catch(error){
@@ -105,5 +105,3 @@ exports.deleteRoom = async (req, res) => {
 		res.send(500).json({message: error.message});
 	}
 }
-
-
