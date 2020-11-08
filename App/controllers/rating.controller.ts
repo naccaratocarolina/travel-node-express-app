@@ -1,11 +1,22 @@
 const Rating = require('../models/rating.model.ts');
 const Hotel = require('../models/hotel.model.ts');
 const User = require('../models/user.model.ts');
+const utils = require('../lib/utils.ts');
 
 exports.createRating = async function(req, res){
 	try{
+
+		let headerToken = req.get('Authorization');
+
+		if(!headerToken){
+			res.status(401).json({message: "O usário não está logado"});
+		}else{
+			headerToken = headerToken.split(' ')[1];
+			var userId = utils.userInfo(headerToken).sub;
+		}
+		
 		const data = await Rating.create({
-			_user: req.body.user,
+			_user: userId,
 			_hotel: req.body.hotel,
 			rating: req.body.rating
 		});
