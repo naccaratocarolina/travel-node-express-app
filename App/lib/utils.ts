@@ -55,6 +55,12 @@ function generateJsonWebToken(user) {
     return jsonwebtoken.sign(payload, PRIV_KEY, {expiresIn: '7d', algorithm: 'RS256' });
 }
 
+// Retorna objeto com a id do usuário
+function userInfo(token){
+    return jsonwebtoken.verify(token,PRIV_KEY, {algorithms: 'RS256'});
+}
+
+module.exports.userInfo = userInfo;
 module.exports.generateHash = generateHash;
 module.exports.verifyPassword = verifyPassword;
 module.exports.generateJsonWebToken = generateJsonWebToken;
