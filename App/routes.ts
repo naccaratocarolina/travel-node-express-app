@@ -24,25 +24,25 @@ module.exports = function (router) {
     router.delete('/user/:id', User.deleteUser);
 
     //Hotel Controller
-    // router.get('/hotel', authMiddleware,verifyPermissionMiddleware('readAny', 'hotel'), Hotel.listAllHotels);
-    router.get('/hotel', Hotel.listAllHotels);
+    router.get('/hotel', authMiddleware, verifyPermissionMiddleware('readAny', 'hotel'), Hotel.listAllHotels);
     router.get('/hotel/:id', Hotel.getHotel);
     router.post('/hotel', Hotel.createHotel);
     router.delete('/hotel/:id', authMiddleware, Hotel.deleteHotel);
+        //Room
+        router.post('/hotel/:hotelId/room', Hotel.createRoom);
+        router.delete('/hotel/:hotelId/room/:roomId', authMiddleware, Hotel.deleteRoom);
 
-    //Hotel Room
-    router.post('/hotel/:hotelId/room', Hotel.createRoom);
-    router.delete('/hotel/:hotelId/room/:roomId', authMiddleware, Hotel.deleteRoom);
-
-    //Booking Room
+    //Booking Controller
     router.get('/hotel/room/booking', Booking.getBookings); 
     router.get('/hotel/room/booking/available', Booking.getAvailableRooms);
-    router.put('/hotel/room/booking/:id', Booking.updateBooking);
     router.post('/hotel/room/booking', Booking.createBooking);
+    router.put('/hotel/room/booking/:id', Booking.updateBooking);
     router.delete('/hotel/room/booking/:id', Booking.deleteBooking);
 
     //Rating Controller
     router.post('/rating', Rating.createRating);
+    router.put('/rating/:id', Rating.updateRating);
+    router.delete('/rating/:id', Rating.deleteRating);
 };
 
 export {};

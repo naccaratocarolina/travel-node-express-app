@@ -34,4 +34,55 @@ exports.createRating = async function(req, res){
 	}
 }
 
+exports.updateRating = async function (req, res){
+	try{
+
+		let headerToken = req.get('Authorization');
+	
+		if(!headerToken){
+			res.status(401).json({message: "O usário não está logado"});
+		}else{
+			headerToken = headerToken.split(' ')[1];
+			var userId = utils.userInfo(headerToken).sub;
+		}
+
+		const ratingInfo = await Rating.findById(req.params.id);
+		
+		if(ratingInfo._user == userId){
+			const data = await Rating.findByIdAndUpdate(req.params.id, {rating: req.body.rating}, {new: true});
+			res.send(data);
+		}else{
+			res.status(401).json({message: "Não é possível editar a avaliação de outra pessoa"})
+		}
+
+	}catch(error){
+		res.status(500).json({message: error.message});
+	}
+}
+
+exports.deleteRating = async function (req, res){
+	try{
+
+		let headerToken = req.get('Authorization');
+	
+		if(!headerToken){
+			res.status(401).json({message: "O usário não está logado"});
+		}else{
+			headerToken = headerToken.split(' ')[1];
+			var userId = utils.userInfo(headerToken).sub;
+		}
+
+		const ratingInfo = await Rating.findById(req.params.id);
+		if(ratingInfo._user == userId){
+			await Rating.findByIdAndDelete(req.params.id);
+			res.send({message: "Avaliação deletada com sucesso"})
+		}else{
+			res.status(401).json({message: "Não é possível deletar a avaliação de outra pessoa"})
+		}
+
+	}catch(error){
+		res.status(500).json({message: error.message});
+	}
+}
+
 export {};
