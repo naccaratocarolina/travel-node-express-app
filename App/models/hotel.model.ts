@@ -45,7 +45,9 @@ const hotelSchema = new Schema(
 		}],
 
 		// Relação N-N
-		ratings: [{type: Schema.Types.ObjectId, ref: 'Rating'}]
+		ratings: [{type: Schema.Types.ObjectId, ref: 'Rating'}],
+
+		image: {type: String}
     },
     { timestamps: true, collection: "hotels" }
 );

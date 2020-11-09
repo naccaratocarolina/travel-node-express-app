@@ -2,6 +2,8 @@ const Hotel = require('../models/hotel.model.ts');
 
 exports.createHotel = async function (req, res){
 	try{
+		// res.send(req.file.path);
+		// return;
 		const data = await Hotel.create({
 			name: req.body.name,
 			address: {
@@ -14,7 +16,8 @@ exports.createHotel = async function (req, res){
 				price: req.body.price,
 				capacity: req.body.capacity,
 				description: req.body.description
-			} 
+			},
+			image: req.file.path 
 		});
 		res.send(data);
 
