@@ -1,6 +1,7 @@
 //Models
 const User = require('./models/user.model.ts');
 const Hotel = require('./models/hotel.model.ts');
+const Rating = require('./models/rating.model.ts');
 
 // Conexão com o BD
 const DBConnection = require('./config/connection.ts');
@@ -44,9 +45,6 @@ for(let i = 0; i < users.length; i++){
 			done++;
 			if(done === users.length) {
 				console.log("O seed de usuários foi realizado com sucesso!");
-				// exit();
-
-				console.log(_.sample(users)._id);
 			}
 		}
 	});
@@ -86,6 +84,36 @@ for(let i = 0; i < hotels.length; i++){
 			hotelsDone++;
 			if(hotelsDone === hotels.length) {
 				console.log("O seed de hotéis foi realizado com sucesso!");
+			}
+		}
+	});
+}
+
+//Seed de Rating
+let ratings = [];
+const ratingQuantity = 10;
+
+for(let i = 0; i < ratingQuantity; i++){
+	ratings.push(
+		new Rating({
+			_user: _.sample(users)._id,
+			_hotel: _.sample(hotels)._id,
+			rating: faker.random.number()
+		})
+	)
+}
+
+let ratingsDone = 0;
+for(let i = 0; i < ratings.length; i++){
+	ratings[i].save( function (err, result) {
+		// Exibe o erro ocorrido no terminal
+		if(err){
+			console.log(err);
+			exit();
+		}else{
+			ratingsDone++;
+			if(ratingsDone === ratings.length) {
+				console.log("O seed de avaliações foi realizado com sucesso!");
 				exit();
 			}
 		}
