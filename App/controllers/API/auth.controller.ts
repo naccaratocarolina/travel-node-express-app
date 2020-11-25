@@ -1,8 +1,18 @@
 // @ts-ignore
 const utils = require('../../lib/utils.ts');
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
 
 // @ts-ignore
 const User = require('../../models/user.model.ts').model('User');
+
+// Notificação por email
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth: {
+        api_key:'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'
+    }
+}));
+
 
 //Importando a controller de User
 const UserController = require('../user.controller.ts');
@@ -14,8 +24,18 @@ const UserController = require('../user.controller.ts');
  * @param response
  * @param next
  */
-exports.register = function (request, response, next) {
-    UserController.createUser(request, response, next);
+exports.register = async function (request, response) {
+    try{
+        await UserController.createUser(request, response);
+        transporter.sendMail({
+            to: request.body.email,
+            from: 'olucasper@gmail.com',
+            subject: 'Cadastro realizado com sucesso!',
+            html: '<h1>Cadastro concluído!</h1>'
+        });
+    }catch(error){
+        response.status(500).json({message: error.message});
+    }
 }
 
 /**
