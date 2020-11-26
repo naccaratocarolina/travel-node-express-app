@@ -1,5 +1,7 @@
 // @ts-ignore
-const User = require('../models/user.model.ts');
+const User = require('../models/user.model.ts').model('User');
+// @ts-ignore
+const utils = require('../lib/utils.ts');
 
 /**
  * List all users.
@@ -10,7 +12,10 @@ const User = require('../models/user.model.ts');
  */
 exports.listAllUsers = function (request, response, next) {
     //quando a query nao eh especificada, retorna todos os objetos
-    User.find({}, function (err, users) {
+    
+    //O populate puxa as informações de ratings da model de Rating. Dentro da model de Rating podemos puxar as informações sobre o Hotel através de outro populate
+    User.find({}).populate({path: 'ratings', select: ['_hotel', 'rating'], 
+    populate: {path: '_hotel', model: 'Hotel', select: 'name'}}).exec(function (err, users) {
         if(err) {
             response.json({
                 error: err,
@@ -57,7 +62,6 @@ exports.getUser = function (request, response, next) {
         }
 
         response.json({
-            user: user,
             message: "Usuário encontrado com sucesso!"
         });
     });
@@ -70,10 +74,16 @@ exports.getUser = function (request, response, next) {
  * @param response
  */
 exports.createUser = function (request, response, next) {
+    const generateHash = utils.generateHash(request.body.password);
+    const salt = generateHash.salt;
+    const hash = generateHash.hash;
+
     var newUser = new User ({
         name: request.body.name,
         email: request.body.email,
-        password: request.body.password
+        salt: salt,
+        hash: hash,
+        role: request.body.role ? request.body.role : "User"
     });
 
     newUser.save(newUser, function (err, newUser) {
